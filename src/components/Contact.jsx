@@ -1,6 +1,110 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 
 const Contact = () => {
+  // Estados para manejar el formulario
+  const [formData, setFormData] = useState({
+    nombre: '',
+    telefono: '',
+    email: '',
+    servicio: '',
+    mensaje: ''
+  });
+  
+  // Estado para manejar las imágenes
+  const [imagenes, setImagenes] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
+  
+  // Referencia para el input de archivos
+  const fileInputRef = useRef(null);
+  
+  // Manejar cambios en los inputs
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData({
+      ...formData,
+      [id]: value
+    });
+  };
+  
+  // Manejar selección de archivos
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setImagenes([...imagenes, ...selectedFiles]);
+    
+    // Crear URLs para previsualizaciones
+    const newPreviewUrls = selectedFiles.map(file => URL.createObjectURL(file));
+    setPreviewUrls([...previewUrls, ...newPreviewUrls]);
+  };
+  
+  // Eliminar una imagen
+  const removeImage = (index) => {
+    const newImagenes = [...imagenes];
+    const newPreviewUrls = [...previewUrls];
+    
+    // Revocar URL para liberar memoria
+    URL.revokeObjectURL(previewUrls[index]);
+    
+    newImagenes.splice(index, 1);
+    newPreviewUrls.splice(index, 1);
+    
+    setImagenes(newImagenes);
+    setPreviewUrls(newPreviewUrls);
+  };
+  
+  // Abrir diálogo de selección de archivos
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+  
+  // Enviar formulario a WhatsApp
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Validar campos obligatorios
+    if (!formData.nombre || !formData.telefono || !formData.servicio) {
+      alert('Por favor completa los campos obligatorios: Nombre, Teléfono y Servicio');
+      return;
+    }
+    
+    // Preparar mensaje para WhatsApp
+    let message = `*NUEVA SOLICITUD DE CITA*\n\n`;
+    message += `*Nombre:* ${formData.nombre}\n`;
+    message += `*Teléfono:* ${formData.telefono}\n`;
+    message += `*Email:* ${formData.email || 'No proporcionado'}\n`;
+    message += `*Servicio:* ${formData.servicio}\n`;
+    message += `*Mensaje:* ${formData.mensaje || 'No proporcionado'}\n`;
+    
+    if (imagenes.length > 0) {
+      message += `\n*El paciente ha adjuntado ${imagenes.length} imagen(es) que se enviarán por separado.*`;
+    }
+    
+    // Número de WhatsApp (con formato internacional)
+    const phoneNumber = "50488789886";
+    
+    // Codificar el mensaje para URL
+    const encodedMessage = encodeURIComponent(message);
+    
+    // Crear enlace de WhatsApp
+    const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    
+    // Abrir WhatsApp en una nueva ventana
+    window.open(whatsappLink, '_blank');
+    
+    // Limpiar el formulario después de enviar
+    setFormData({
+      nombre: '',
+      telefono: '',
+      email: '',
+      servicio: '',
+      mensaje: ''
+    });
+    
+    // Limpiar las imágenes
+    previewUrls.forEach(url => URL.revokeObjectURL(url));
+    setImagenes([]);
+    setPreviewUrls([]);
+  };
+
   return (
     <section id="contacto" className="py-20 bg-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -68,22 +172,28 @@ const Contact = () => {
           
           <div id="cita" className="bg-pink-50 rounded-xl p-8 shadow-lg">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Agenda tu Cita</h2>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
-                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-1">Nombre completo</label>
+                <label htmlFor="nombre" className="block text-sm font-medium text-gray-700 mb-1">Nombre completo *</label>
                 <input 
                   type="text" 
                   id="nombre" 
+                  required
+                  value={formData.nombre}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   placeholder="Tu nombre y apellido"
                 />
               </div>
               
               <div>
-                <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-1">Teléfono</label>
+                <label htmlFor="telefono" className="block text-sm font-medium text-gray-700 mb-1">Teléfono *</label>
                 <input 
                   type="tel" 
                   id="telefono" 
+                  required
+                  value={formData.telefono}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   placeholder="Tu número de teléfono"
                 />
@@ -94,24 +204,29 @@ const Contact = () => {
                 <input 
                   type="email" 
                   id="email" 
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   placeholder="Tu correo electrónico"
                 />
               </div>
               
               <div>
-                <label htmlFor="servicio" className="block text-sm font-medium text-gray-700 mb-1">Servicio de interés</label>
+                <label htmlFor="servicio" className="block text-sm font-medium text-gray-700 mb-1">Servicio de interés *</label>
                 <select 
                   id="servicio" 
+                  required
+                  value={formData.servicio}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
                 >
                   <option value="">Selecciona un servicio</option>
-                  <option value="limpieza">Limpieza dental</option>
-                  <option value="blanqueamiento">Blanqueamiento</option>
-                  <option value="endodoncia">Endodoncia</option>
-                  <option value="extraccion">Extracciones</option>
-                  <option value="odontopediatria">Odontopediatría</option>
-                  <option value="implantes">Implantes dentales</option>
+                  <option value="Limpieza dental">Limpieza dental</option>
+                  <option value="Blanqueamiento">Blanqueamiento</option>
+                  <option value="Endodoncia">Endodoncia</option>
+                  <option value="Extracciones">Extracciones</option>
+                  <option value="Odontopediatría">Odontopediatría</option>
+                  <option value="Implantes dentales">Implantes dentales</option>
                 </select>
               </div>
               
@@ -120,32 +235,14 @@ const Contact = () => {
                 <textarea 
                   id="mensaje" 
                   rows="4"
+                  value={formData.mensaje}
+                  onChange={handleInputChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
                   placeholder="Cuéntanos más sobre lo que necesitas"
                 ></textarea>
               </div>
               
-              <div>
-                <label htmlFor="imagenes" className="block text-sm font-medium text-gray-700 mb-1">
-                  Imágenes de tus dientes (opcional)
-                  <span className="ml-2 text-xs text-gray-500">Ayuda a un mejor diagnóstico</span>
-                </label>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-pink-400 transition-colors">
-                  <div className="space-y-1 text-center">
-                    <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                      <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <div className="flex text-sm text-gray-600">
-                      <label htmlFor="file-upload" className="relative cursor-pointer bg-white rounded-md font-medium text-pink-600 hover:text-pink-500 focus-within:outline-none">
-                        <span>Sube imágenes</span>
-                        <input id="file-upload" name="file-upload" type="file" className="sr-only" multiple accept="image/*" />
-                      </label>
-                      <p className="pl-1">o arrastra y suelta</p>
-                    </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
-                  </div>
-                </div>
-              </div>
+             
               
               {/* Botón mejorado con mayor visibilidad */}
               <div className="relative">
@@ -153,7 +250,7 @@ const Contact = () => {
                   type="submit" 
                   className="w-full bg-pink-600 text-white py-4 px-6 rounded-lg text-xl font-bold hover:bg-pink-700 transition-all shadow-xl border-2 border-pink-400"
                 >
-                  Solicitar Cita
+                  Solicitar Cita por WhatsApp
                 </button>
                 <div className="absolute top-0 -right-2 -mt-2 bg-yellow-400 text-xs text-black font-bold px-2 py-1 rounded-full animate-bounce">
                   ¡Nuevo!

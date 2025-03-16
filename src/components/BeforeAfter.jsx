@@ -34,7 +34,7 @@ const BeforeAfter = () => {
             <div className="bg-gray-50 rounded-xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-105 animate-on-scroll" style={{animation: 'slideInLeft 0.6s ease forwards'}}>
               <div className="relative">
                 <img 
-                  src="/src/assets/images/antes-despues-1.jpg" 
+                  src="/public/images/antes-despues-1.jpg" 
                   alt="Antes y después blanqueamiento" 
                   className="w-full" 
                   onError={(e) => {
@@ -54,7 +54,7 @@ const BeforeAfter = () => {
             <div className="bg-gray-50 rounded-xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-105 animate-on-scroll" style={{animation: 'fadeInUp 0.8s ease forwards', animationDelay: '0.2s'}}>
               <div className="relative">
                 <img 
-                  src="/src/assets/images/antes-despues-2.jpg" 
+                  src="/public/images/antes-despues-2.jpg" 
                   alt="Antes y después ortodoncia" 
                   className="w-full" 
                   onError={(e) => {
@@ -74,7 +74,7 @@ const BeforeAfter = () => {
             <div className="bg-gray-50 rounded-xl overflow-hidden shadow-lg transition-all duration-500 hover:shadow-xl hover:scale-105 animate-on-scroll" style={{animation: 'slideInRight 0.6s ease forwards', animationDelay: '0.4s'}}>
               <div className="relative">
                 <img 
-                  src="/src/assets/images/antes-despues-3.jpg" 
+                  src="/public/images/antes-despues-3.jpg" 
                   alt="Antes y después implantes" 
                   className="w-full" 
                   onError={(e) => {
