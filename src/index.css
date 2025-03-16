@@ -29,17 +29,27 @@ body {
   scroll-behavior: smooth;
 }
 
+/* Arreglo para visibilidad de botones y animaciones */
 .animate-on-scroll {
-  opacity: 0;
+  opacity: 1; /* Cambiado de 0 a 1 para que sea visible por defecto */
 }
 
 .animate-fade-in {
   animation: fadeIn 1s ease-out forwards;
 }
 
+/* Aseguramos que todos los botones de acción sean visibles */
+a[href="#cita"], button[type="submit"] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Animaciones modificadas para mejor visibilidad */
 @keyframes fadeInUp {
   from {
-    opacity: 0;
+    opacity: 0.5; /* Comenzar con algo de opacidad */
     transform: translateY(30px);
   }
   to {
@@ -49,20 +59,20 @@ body {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% { transform: translateY(0px); opacity: 1; }
+  50% { transform: translateY(-10px); opacity: 1; }
+  100% { transform: translateY(0px); opacity: 1; }
 }
 
 @keyframes slideInRight {
   0% {
-    opacity: 0;
+    opacity: 0.5;
     transform: translateX(50px);
   }
   100% {
@@ -73,7 +83,7 @@ body {
 
 @keyframes slideInLeft {
   0% {
-    opacity: 0;
+    opacity: 0.5;
     transform: translateX(-50px);
   }
   100% {

@@ -33,7 +33,12 @@ const Header = () => {
             <a href="#servicios" className="text-gray-700 hover:text-pink-600 transition-colors">Servicios</a>
             <a href="#testimonios" className="text-gray-700 hover:text-pink-600 transition-colors">Testimonios</a>
             <a href="#contacto" className="text-gray-700 hover:text-pink-600 transition-colors">Contacto</a>
-            <a href="#cita" className="bg-pink-600 text-white px-6 py-2 rounded-full hover:bg-pink-700 transition-all transform hover:scale-105 shadow-md">
+            
+            {/* Botón de agendar cita con mayor visibilidad */}
+            <a 
+              href="#cita" 
+              className="bg-pink-600 text-white px-6 py-3 rounded-full hover:bg-pink-700 transition-all transform hover:scale-105 shadow-md border-2 border-pink-400 text-lg font-bold"
+            >
               Agendar Cita
             </a>
           </nav>
@@ -49,14 +54,21 @@ const Header = () => {
           </button>
         </div>
         
-        {/* Menú móvil */}
+        {/* Menú móvil con botón más visible */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 bg-white rounded-lg shadow-lg">
             <a href="#inicio" className="block py-2 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600">Inicio</a>
             <a href="#servicios" className="block py-2 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600">Servicios</a>
             <a href="#testimonios" className="block py-2 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600">Testimonios</a>
             <a href="#contacto" className="block py-2 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600">Contacto</a>
-            <a href="#cita" className="block py-2 px-4 text-pink-600 font-medium">Agendar Cita</a>
+            
+            {/* Botón destacado en el menú móvil */}
+            <a 
+              href="#cita" 
+              className="block py-3 px-4 mt-2 mb-1 mx-4 bg-pink-600 text-white text-center font-bold rounded-lg"
+            >
+              AGENDAR CITA
+            </a>
           </div>
         )}
       </div>

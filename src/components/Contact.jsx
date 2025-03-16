@@ -66,7 +66,7 @@ const Contact = () => {
             </div>
           </div>
           
-          <div id="cita" className="bg-pink-50 rounded-xl p-8 shadow-lg animate-on-scroll">
+          <div id="cita" className="bg-pink-50 rounded-xl p-8 shadow-lg">
             <h2 className="text-2xl font-bold mb-6 text-gray-800">Agenda tu Cita</h2>
             <form className="space-y-6">
               <div>
@@ -147,9 +147,18 @@ const Contact = () => {
                 </div>
               </div>
               
-              <button type="submit" className="w-full bg-pink-600 text-white py-3 px-6 rounded-lg text-lg font-medium hover:bg-pink-700 transition-all transform hover:scale-105 shadow-lg animate-on-scroll" style={{animation: 'pulse 2s infinite'}}>
-                Solicitar Cita
-              </button>
+              {/* Botón mejorado con mayor visibilidad */}
+              <div className="relative">
+                <button 
+                  type="submit" 
+                  className="w-full bg-pink-600 text-white py-4 px-6 rounded-lg text-xl font-bold hover:bg-pink-700 transition-all shadow-xl border-2 border-pink-400"
+                >
+                  Solicitar Cita
+                </button>
+                <div className="absolute top-0 -right-2 -mt-2 bg-yellow-400 text-xs text-black font-bold px-2 py-1 rounded-full animate-bounce">
+                  ¡Nuevo!
+                </div>
+              </div>
             </form>
           </div>
         </div>
