@@ -1,5 +1,8 @@
 import React from 'react';
 
+// Importar el componente de fallback local
+import ImagePlaceholder from './utils/ImagePlaceholder';
+
 const Hero = () => {
   return (
     <section id="inicio" className="relative pt-24 pb-20 md:pt-40 md:pb-32 overflow-hidden">
@@ -62,7 +65,7 @@ const Hero = () => {
           </div>
         </div>
         
-        {/* Imagen principal */}
+        {/* Imagen principal con generación local de SVG fallback */}
         <div className="mt-16 text-center">
           <div className="relative inline-block">
             <img 
@@ -71,7 +74,18 @@ const Hero = () => {
               className="rounded-xl shadow-2xl mx-auto"
               onError={(e) => {
                 e.target.onerror = null;
-                e.target.src = 'https://via.placeholder.com/600x400?text=Consultorio+Dental';
+                // Crear SVG placeholder localmente en lugar de usar un servicio externo
+                const svgContent = `
+                  <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+                    <rect width="100%" height="100%" fill="#f8fafc" />
+                    <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24px" fill="#64748b" 
+                          text-anchor="middle" dominant-baseline="middle">
+                      Consultorio Dental
+                    </text>
+                  </svg>
+                `;
+                const encodedSVG = encodeURIComponent(svgContent.trim());
+                e.target.src = `data:image/svg+xml;charset=UTF-8,${encodedSVG}`;
               }}
             />
             <div className="absolute -top-4 -right-4 bg-pink-500 text-white px-4 py-2 rounded-lg shadow-lg text-sm font-bold transform rotate-3">
